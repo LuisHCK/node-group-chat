@@ -11,17 +11,9 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
-        .modal {
-            display: none;
-          }
-
-          .modal.is-open {
-            display: block;
-          }
     </style>
     <script src="../../socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
   </head>
   <body>
     <ul id="messages"></ul>
@@ -30,10 +22,19 @@
     </form>
     <script>
             var socket = io.connect('http://e2api.com:3011');
+            
+            var username = undefined
 
             // submit text message without reload/refresh the page
             $('form').submit(function(e){
                 e.preventDefault(); // prevents page reloading
+                
+                // Promt name if not defined
+                if (!username) {
+                  username = prompt("What's your name");
+                  socket.emit('username', username);
+                }
+                
                 socket.emit('chat_message', $('#txt').val());
                 $('#txt').val('');
                 return false;
@@ -48,48 +49,6 @@
             socket.on('is_online', function(username) {
                 $('#messages').append($('<li>').html(username));
             });
-
-            // ask username
-            function setName() {
-              const name = $('#name').val()
-              socket.emit('username', name);
-            }
-            MicroModal.show('modal-1');
-
     </script>
-
-<!-- [1] -->
-    <div id="modal-1" aria-hidden="true">
-
-      <!-- [2] -->
-      <div tabindex="-1" data-micromodal-close>
-
-        <!-- [3] -->
-        <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
-
-
-          <header>
-            <h2 id="modal-1-title">
-              Modal Title
-            </h2>
-
-            <!-- [4] -->
-            <button aria-label="Close modal" data-micromodal-close></button>
-          </header>
-
-          <div id="modal-1-content">
-            <div>
-              <input type="text" name="name" id="name">
-            </div>
-            <button onclick="setName()" data-custom-close="modal-1">
-              Save
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-
   </body>
 </html>
