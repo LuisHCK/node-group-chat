@@ -14,6 +14,7 @@
     </style>
     <script src="../../socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
   </head>
   <body>
     <ul id="messages"></ul>
@@ -42,9 +43,43 @@
             });
 
             // ask username
-            var username = prompt('Please tell me your name');
-            socket.emit('username', username);
+            function setName() {
+              const name = $('#name').val()
+              socket.emit('username', name);
+            }
+            MicroModal.show('modal-1');
 
     </script>
+<div id="modal-1" aria-hidden="true">
+
+  <!-- [2] -->
+  <div tabindex="-1" data-micromodal-close>
+
+    <!-- [3] -->
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
+
+
+      <header>
+        <h2 id="modal-1-title">
+          What's your name?
+        </h2>
+
+        <!-- [4] -->
+        <button aria-label="Close modal" data-micromodal-close></button>
+      </header>
+
+      <div id="modal-1-content">
+      
+        <div>
+          <input type="text" name="name" id="name">
+        </div>
+        <button onclick="setName()" data-custom-close="modal-1">
+          Save
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
   </body>
 </html>
