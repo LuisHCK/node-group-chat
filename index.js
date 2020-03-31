@@ -23,6 +23,6 @@ io.sockets.on('connection', function(socket) {
 
 });
 
-const server = http.listen(30011, function() {
-    console.log('listening on *:30011');
+const server = http.listen(3011, function() {
+    console.log('listening on *:3011');
 });
